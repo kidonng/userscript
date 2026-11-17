@@ -2,15 +2,15 @@ import { globSync, readFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { $ } from "bun";
 
-// Vercel builds use shallow clone
-const isShallow =
-  (await $`git rev-parse --is-shallow-repository`.text()).trim() === "true";
-if (isShallow) {
-  await $`git fetch --unshallow`;
-}
+const isCI = Boolean(process.env.CI);
 
 const commit = (await $`git rev-parse HEAD`.text()).trim();
-const commitCount = (await $`git rev-list --count HEAD`.text()).trim();
+const commitCount = (
+  isCI
+    ? // https://gist.github.com/0penBrain/7be59a48aba778c955d992aa69e524c5
+      await $`curl -I -k "https://api.github.com/repos/kidonng/userscript/commits?per_page=1&sha=${commit}" | sed -n '/^[Ll]ink:/ s/.*"next".*page=\([0-9]*\).*"last".*/\1/p'`.text()
+    : await $`git rev-list --count HEAD`.text()
+).trim();
 
 const delimiter = "// ==/UserScript==";
 const permissions = ["GM_getValue", "GM_setValue"];
