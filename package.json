@@ -1,26 +1,16 @@
 {
   "type": "module",
-  "packageManager": "pnpm@10.0.0+sha512.b8fef5494bd3fe4cbd4edabd0745df2ee5be3e4b0b8b08fa643aa3e4c6702ccc0f00d68fa8a8c9858a735a0032485a44990ed2810526c875e416f001b17df12b",
   "scripts": {
-    "build": "node --experimental-strip-types scripts/build.ts",
-    "check": "tsc --noEmit",
-    "lint": "eslint",
-    "lint:fix": "eslint --fix",
-    "watch": "node --experimental-strip-types scripts/watch.ts"
+    "build": "bun scripts/build.ts",
+    "check": "bun check",
+    "watch": "bun scripts/watch.ts"
   },
   "dependencies": {
     "animation-observer": "^3.0.1",
-    "dom-chef": "^5.1.1",
-    "select-dom": "^9.3.0"
+    "dom-chef": "^5.2.0",
+    "select-dom": "^10.1.0"
   },
   "devDependencies": {
-    "@antfu/eslint-config": "^3.13.0",
-    "@types/node": "^22.10.5",
-    "esbuild": "^0.24.2",
-    "eslint": "^9.27.0",
-    "eslint-plugin-format": "^1.0.1",
-    "jiti": "^2.4.2",
-    "nanoexec": "^1.1.0",
-    "typescript": "^5.7.3"
+    "@types/bun": "latest"
   }
 }

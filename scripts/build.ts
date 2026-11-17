@@ -1,6 +1,5 @@
-import { config } from './config.ts'
+import { configs } from './config.ts'
 
-for await (const context of config) {
-  await context.rebuild()
-  await context.dispose()
+for (const config of configs) {
+  await Bun.build(config)
 }

@@ -1,15 +1,14 @@
 import { globSync, readFileSync } from 'node:fs'
-import { context } from 'esbuild'
-import exec from 'nanoexec'
+import { $ } from 'bun'
 
-const { stdout: commit } = await exec('git', ['rev-parse', 'HEAD'])
-const { stdout: commitCount } = await exec('git', ['rev-list', '--count', 'HEAD'])
+const commit = await $`git rev-parse HEAD`.text()
+const commitCount = await $`git rev-list --count HEAD`.text()
 
 const delimiter = '// ==/UserScript=='
 function getBanner(path: string) {
   return (
     readFileSync(path, 'utf8')
-      .split(delimiter)[0]
+      .split(delimiter)[0]!
       .replace(
         /(@version.+)/,
         `$1.${commitCount.toString().trim()}-${commit.toString().slice(0, 7)}`,
@@ -18,22 +17,20 @@ function getBanner(path: string) {
   )
 }
 
-export const config = globSync('source/*/*.user.ts{,x}').map(script =>
-  context({
-    entryPoints: [script],
-    bundle: true,
-    banner: {
-      js: getBanner(script),
-    },
+export const configs = globSync('source/*/*.user.ts{,x}').map(script =>
+  ({
+    entrypoints: [script],
+    banner: getBanner(script),
     outdir: 'dist',
     plugins: [
       {
         name: 'Build Time',
-        setup: build =>
+        setup: build => {
           build.onEnd(() =>
             console.log(`${new Date().toLocaleTimeString()} Built ${script}`),
-          ),
+          )
+        },
       },
     ],
-  }),
+  } satisfies Bun.BuildConfig),
 )
