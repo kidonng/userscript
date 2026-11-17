@@ -2,6 +2,13 @@ import { globSync, readFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { $ } from "bun";
 
+// Vercel builds use shallow clone
+const isShallow =
+  (await $`git rev-parse --is-shallow-repository`.text()).trim() === "true";
+if (isShallow) {
+  await $`git fetch --unshallow`;
+}
+
 const commit = (await $`git rev-parse HEAD`.text()).trim();
 const commitCount = (await $`git rev-list --count HEAD`.text()).trim();
 
