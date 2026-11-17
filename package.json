@@ -7,10 +7,12 @@
   },
   "dependencies": {
     "animation-observer": "^3.0.1",
-    "dom-chef": "^5.2.0",
+    "octicons-plain-react": "^19.42.0",
+    "react": "npm:dom-chef@^5.2.0",
     "select-dom": "^10.1.0"
   },
   "devDependencies": {
-    "@types/bun": "latest"
+    "@types/bun": "latest",
+    "@violentmonkey/types": "^0.3.5"
   }
 }

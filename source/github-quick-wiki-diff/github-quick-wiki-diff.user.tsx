@@ -7,7 +7,7 @@
 // ==/UserScript==
 
 import { observe } from "animation-observer";
-import React from "dom-chef";
+import * as React from "react";
 import { $ } from "select-dom";
 
 function getCommit(link: HTMLAnchorElement) {
