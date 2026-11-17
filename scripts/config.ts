@@ -6,8 +6,13 @@ const commitCount = await $`git rev-list --count HEAD`.text();
 
 const delimiter = "// ==/UserScript==";
 function getBanner(path: string) {
+  const file = readFileSync(path, "utf8");
+  if (!file.includes(delimiter)) {
+    throw new Error(`Missing delimiter in file: ${path}`);
+  }
+
   return (
-    readFileSync(path, "utf8")
+    file
       .split(delimiter)[0]!
       .replace(
         /(@version.+)/,
