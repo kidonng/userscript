@@ -1,5 +1,5 @@
-import { configs } from './config.ts'
+import { configs } from "./config.ts";
 
 for (const config of configs) {
-  await Bun.build(config)
+  await Bun.build(config);
 }
