@@ -1,11 +1,7 @@
 // ==UserScript==
 // @name        GitHub User Creation Time
 // @description Adds the creation time of a user on their profile.
-// @namespace   https://github.com/kidonng/script/tree/main/source/github-user-creation-time
-// @version     1
 // @match       https://github.com/*
-// @grant       GM_getValue
-// @grant       GM_setValue
 // ==/UserScript==
 
 import * as React from "react";

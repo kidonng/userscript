@@ -1,24 +1,32 @@
 import { globSync, readFileSync } from "node:fs";
+import { dirname } from "node:path";
 import { $ } from "bun";
 
-const commit = await $`git rev-parse HEAD`.text();
-const commitCount = await $`git rev-list --count HEAD`.text();
+const commit = (await $`git rev-parse HEAD`.text()).trim();
+const commitCount = (await $`git rev-list --count HEAD`.text()).trim();
 
 const delimiter = "// ==/UserScript==";
+const permissions = ["GM_getValue", "GM_setValue"];
+
 function getBanner(path: string) {
   const file = readFileSync(path, "utf8");
   if (!file.includes(delimiter)) {
     throw new Error(`Missing delimiter in file: ${path}`);
   }
 
-  return (
-    file
-      .split(delimiter)[0]!
-      .replace(
-        /(@version.+)/,
-        `$1.${commitCount.toString().trim()}-${commit.toString().slice(0, 7)}`,
-      ) + delimiter
-  );
+  const tags = [
+    `// @version     ${commitCount}`,
+    `// @namespace   https://github.com/kidonng/userscript`,
+    `// @homepageURL https://github.com/kidonng/userscript/tree/${commit}/${dirname(path)}`,
+  ];
+
+  for (const permission of permissions) {
+    if (file.includes(permission)) {
+      tags.push(`// @grant       ${permission}`);
+    }
+  }
+
+  return file.split(delimiter)[0]! + tags.join("\n") + "\n" + delimiter;
 }
 
 export const configs = globSync("source/*/*.user.ts{,x}").map(

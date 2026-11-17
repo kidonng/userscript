@@ -1,8 +1,6 @@
 // ==UserScript==
 // @name        GitHub Quick Wiki Diff
 // @description Adds a link to compare a wiki revision with the previous version.
-// @namespace   https://github.com/kidonng/script/tree/main/source/github-quick-wiki-diff
-// @version     1
 // @match       https://github.com/*
 // ==/UserScript==
 
