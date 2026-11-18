@@ -2,6 +2,7 @@ import { globSync, readFileSync } from "node:fs";
 import { dirname } from "node:path";
 import { $ } from "bun";
 
+// CI clones are mostly shallow and local commit count incorrect
 const isCI = Boolean(process.env.CI);
 
 const commit = (await $`git rev-parse HEAD`.text()).trim();
